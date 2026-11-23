@@ -1,25 +1,25 @@
 ---
 name: hl-layer-creator
 description: >-
-  SVGMap (Hyper-Layered Map: HLMap) の仕様駆動開発、分散型ハイパーレイヤリングアーキテクチャ、およびLaWA（Layers as WebApps）の実装を正しく行うためのスキル。LeafletやOpenLayersのような単一モノリシッククライアントへの集約思考を排除し、各レイヤーを自律的なWebアプリ（LaWA）としてカプセル化する設計ハーネスを提供します。
+  HLA (Hyper-Layered Map: HLMap) の仕様駆動開発、分散型ハイパーレイヤリングアーキテクチャ、およびLaWA（Layers as WebApps）の実装を正しく行うためのスキル。LeafletやOpenLayersのような単一モノリシッククライアントへの集約思考を排除し、各レイヤーを自律的なWebアプリ（LaWA）としてカプセル化する設計ハーネスを提供します。
 ---
 
-# SVGMap 仕様駆動開発・アーキテクチャハーネススキル
+# HLA 仕様駆動開発・アーキテクチャハーネススキル
 
-本スキルは、W3C/OGC標準化を背景とする分散型Web地図技術 **SVGMap**（およびその発展形である Hyper-Layering Architecture / HLMap）を正しく扱い、仕様に準拠したWeb地図アプリケーションおよびレイヤーを開発するための体系的ガイドです。
+本スキルは、W3C/OGC標準化を背景とする分散型Web地図技術 **HLA**（およびその発展形である Hyper-Layering Architecture / HLMap）を正しく扱い、仕様に準拠したWeb地図アプリケーションおよびレイヤーを開発するための体系的ガイドです。
 
 一般的なWeb地図ライブラリ（Leaflet、OpenLayers、Mapbox GL JSなど）に慣れた開発者やAIエージェントは、無意識のうちに「単一のJavaScriptスクリプトで地図全体と全レイヤーを集中的に統括・制御する」というモノリシックなアプローチを採用してしまいがちです。
-しかし、SVGMapの本質は**Webそのものと同じ「分散指向（Decentralized）」**であり、レイヤーを単なる受動的データではなく独立したWebアプリケーションとして扱う**「LaWA (Layers as WebApps)」**にあります。
+しかし、HLAの本質は**Webそのものと同じ「分散指向（Decentralized）」**であり、レイヤーを単なる受動的データではなく独立したWebアプリケーションとして扱う**「LaWA (Layers as WebApps)」**にあります。
 
 本スキルは、従来のWebGISの思考停止パターンを防止する**強力なアーキテクチャハーネス（防壁）**を効かせ、堅牢かつ持続可能な仕様駆動開発を実現させます。
 
 ---
 
-## 1. コア設計思想：SVGMapと従来のWebGISの違い
+## 1. コア設計思想：HLAと従来のWebGISの違い
 
-SVGMapを扱う際は、以下の根本的な設計思想の対比を常に念頭に置かなければなりません。
+HLAを扱う際は、以下の根本的な設計思想の対比を常に念頭に置かなければなりません。
 
-| 観点 | 従来のWebGIS (Leaflet / OpenLayers) | SVGMap (Hyper-Layered Map) |
+| 観点 | 従来のWebGIS (Leaflet / OpenLayers) | HLA (Hyper-Layered Map) |
 | :--- | :--- | :--- |
 | **システム構造** | **集約的・モノリシック（Centralized）**<br>1つの巨大なJS空間がすべてを統括 | **分散型・フェデレーション（Decentralized）**<br>独立したWebリソースをURLで疎結合 |
 | **データ保持・流通** | **手元ダウンロード・複製（Data Duplication）**<br>データをDL・ローカル保存して再配信 | **非複製・直接fetch（No Data Copy）**<br>手元にDLせずLaWAが元提供元から直接fetch |
@@ -66,7 +66,7 @@ AIエージェントおよび開発者がLeaflet/OpenLayersのアンチパター
 
 ## 3. 仕様駆動開発ワークフロー（6スキル連携モデル）
 
-SVGMapレイヤーの開発は、ユーザーのデータ準備状況に応じて柔軟に分岐する段階的パイプラインに沿って進めます。
+HLAレイヤーの開発は、ユーザーのデータ準備状況に応じて柔軟に分岐する段階的パイプラインに沿って進めます。
 
 ```mermaid
 flowchart TD
@@ -149,7 +149,7 @@ flowchart TD
     <animation xlink:href="layers/shelters.svg" title="避難所情報" class="overlay" visibility="visible" />
 </svg>
 ```
-詳しい仕様は [SVGMap仕様リファレンス](./references/specification.md) を参照してください。
+詳しい仕様は [HLA仕様リファレンス](./references/specification.md) を参照してください。
 
 ### ステップ3: 各レイヤーのSVG定義
 動的レイヤー（LaWA）の場合、SVGルート要素の `data-controller` 属性でコントローラーHTMLを指定します。
@@ -245,7 +245,7 @@ async function handleMapUpdate() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVGMap アプリケーション</title>
+    <title>HLA アプリケーション</title>
     <style>
         html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; }
         #mapcanvas { width: 100%; height: 100%; }
@@ -258,7 +258,7 @@ async function handleMapUpdate() {
     <!-- 空間計算用ライブラリ -->
     <script src="https://unpkg.com/jsts@1.6.1/dist/jsts.min.js"></script>
     
-    <!-- SVGMap コアフレームワーク (ESM) -->
+    <!-- HLA コアフレームワーク (ESM) -->
     <script type="module">
         import { svgMap } from 'https://cdn.jsdelivr.net/gh/svgmap/svgmapjs@latest/SVGMapLv0.1_r18module.js';
         window.svgMap = svgMap;
@@ -296,4 +296,4 @@ async function handleMapUpdate() {
 
 ## 7. まとめ
 
-SVGMapを扱う際は、**「すべての自律性をレイヤー（LaWA）に与え、コンテナはただの空間的調停者に徹する」**という原則を絶対に崩さないでください。このハーネスを厳格に適用することで、中央集権的なGISプラットフォームに頼ることなく、Web標準だけで動く堅牢で拡張性の高い分散型WebGISを構築できます。
+HLAを扱う際は、**「すべての自律性をレイヤー（LaWA）に与え、コンテナはただの空間的調停者に徹する」**という原則を絶対に崩さないでください。このハーネスを厳格に適用することで、中央集権的なGISプラットフォームに頼ることなく、Web標準だけで動く堅牢で拡張性の高い分散型WebGISを構築できます。

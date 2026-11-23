@@ -2,7 +2,7 @@
 
 ## 1. LaWA の概念とライフサイクル
 
-**LaWA（Layers as WebApps: ウェブアプリケーションとしてのレイヤー）** は、SVGMapにおける動的レイヤーアーキテクチャの中核です。各レイヤーは単なる静的データではなく、独立したHTML/JavaScript実行環境（iframe内）を持つWebアプリケーションとして自律稼働します。
+**LaWA（Layers as WebApps: ウェブアプリケーションとしてのレイヤー）** は、HLAにおける動的レイヤーアーキテクチャの中核です。各レイヤーは単なる静的データではなく、独立したHTML/JavaScript実行環境（iframe内）を持つWebアプリケーションとして自律稼働します。
 
 **【重要：データの非複製原則（No Data Copy）】**
 HLAにおいて極めて重要な原則は、**「データを手元にDLするのではなく、LaWAで直接fetchし、データのコピーを作成しない」**ことです。
@@ -59,7 +59,7 @@ svgImage.getElementById("featureGroup").appendChild(circle);
 ```
 
 ### 2. `window.svgMap` (親フレームワークAPI)
-親のSVGMapエンジンを操作・同期するためのインターフェースです。
+親のHLAエンジンを操作・同期するためのインターフェースです。
 - **`svgMap.getGeoViewBox()`**:
   現在の画面表示領域の地理座標範囲を取得します。
   戻り値: `{ x: number, y: number, width: number, height: number }`

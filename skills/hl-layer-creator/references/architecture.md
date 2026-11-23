@@ -1,10 +1,10 @@
-# SVGMap (HLMap) アーキテクチャ解説書
+# HLA (HLMap) アーキテクチャ解説書
 
 ## 1. 分散型Webマッピング（Hyper-Layering Architecture）の哲学
 
 従来のWebGIS（Leaflet、OpenLayers、Google Maps API、ArcGIS APIなど）は、**「単一のアプリケーションサーバーまたは単一のクライアントアプリケーションが、すべての地図レイヤーとデータを統制する」**という中央集権的（Centralized）なモデルを前提としてきました。
 
-これに対し、**SVGMap**（およびW3C/OGCコミュニティで発展した **Hyper-Layering Architecture: HLA** / **HLMap**）は、**「World Wide Webそのものの分散アーキテクチャ（ハイパーリンクと自律リソース）」**を地図の世界に適用した革新的なオープン仕様です。
+これに対し、**HLA**（およびW3C/OGCコミュニティで発展した **Hyper-Layering Architecture: HLA** / **HLMap**）は、**「World Wide Webそのものの分散アーキテクチャ（ハイパーリンクと自律リソース）」**を地図の世界に適用した革新的なオープン仕様です。
 
 ```
 【従来のWebGISモデル（中央集権・モノリス）】
@@ -18,7 +18,7 @@
        ↓                     ↓                     ↓
  [生データA]            [生データB]           [画像タイルC]
 
-【SVGMap / HLAモデル（分散・フェデレーション・LaWA）】
+【HLA / HLAモデル（分散・フェデレーション・LaWA）】
 +-----------------------------------------------------------+
 | Container.svg (空間調停コンポジタ / ルース結合)           |
 |   - 座標系 (CRS/SRS) の合意                               |
@@ -49,9 +49,9 @@
 
 ## 2. Leaflet / OpenLayers とのアーキテクチャ対比
 
-SVGMapと従来のWebGISフレームワークの本質的な違いを下表に整理します。
+HLAと従来のWebGISフレームワークの本質的な違いを下表に整理します。
 
-| 項目 | Leaflet / OpenLayers | SVGMap (HLA / LaWA) |
+| 項目 | Leaflet / OpenLayers | HLA (HLA / LaWA) |
 | :--- | :--- | :--- |
 | **パラダイム** | 命令的（Imperative API）<br>`L.map('map')`, `map.addLayer(...)` | 宣言的（Declarative Web Document）<br>`Container.svg`, `<animation>` |
 | **レイヤーの本質** | **受動的データ（Passive Data Object）**<br>GeoJSONやタイル配列をエンジンが受領して描画 | **自律的Webアプリ（Autonomous WebApp）**<br>レイヤー自身がデータ取得、変換、描画、UIを完結 |
@@ -90,7 +90,7 @@ LeafletやOpenLayersでこれらを実装すると、メインのJavaScriptフ�
 
 ## 4. コンテナとLaWAの責務分離ルール
 
-SVGMapの開発において破ってはならない責務境界線（Boundaries）は以下の通りです：
+HLAの開発において破ってはならない責務境界線（Boundaries）は以下の通りです：
 
 ```
 [親コンテナ (Container.svg / index.html) の責務]
@@ -110,4 +110,4 @@ SVGMapの開発において破ってはならない責務境界線（Boundaries�
   × 他のレイヤーのDOMやグローバルな地図状態を不正に改変しない
 ```
 
-この分離を遵守することで、SVGMapアプリケーションは極めて高い保守性と拡張性を維持できます。
+この分離を遵守することで、HLAアプリケーションは極めて高い保守性と拡張性を維持できます。

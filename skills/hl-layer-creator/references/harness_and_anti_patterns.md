@@ -1,4 +1,4 @@
-# SVGMap アーキテクチャハーネス＆アンチパターン集
+# HLA アーキテクチャハーネス＆アンチパターン集
 
 本ドキュメントは、LeafletやOpenLayersなどの従来のWebGISに慣れ親しんだエンジニアやAIモデルが犯しがちな設計ミス（アンチパターン）を明文化し、それを防ぐための**アーキテクチャハーネス（思考防止ガードレール）**を提供します。
 
@@ -48,7 +48,7 @@ document.getElementById('river-slider').addEventListener('input', (e) => {
 });
 ```
 
-#### ✅ 正しい設計 (SVGMap / LaWA 分散型アプローチ)
+#### ✅ 正しい設計 (HLA / LaWA 分散型アプローチ)
 ```
 [構成]
 Container.svg
@@ -74,7 +74,7 @@ Container.svg
 
 #### ❌ 誤った思考
 「`Container.svg` にGeoJSONファイルのURLを直接 `<animation xlink:href="data.geojson">` のように指定すればいいのではないか？」
-→ **不可**。GeoJSONはWebアプリケーションでもSVGドキュメントでもありません。SVGMapはGeoJSONをネイティブで直接解釈して画面に描画するのではなく、**GeoJSONを描画する能力を持った動的レイヤー（LaWA）** を介してマッシュアップします。
+→ **不可**。GeoJSONはWebアプリケーションでもSVGドキュメントでもありません。HLAはGeoJSONをネイティブで直接解釈して画面に描画するのではなく、**GeoJSONを描画する能力を持った動的レイヤー（LaWA）** を介してマッシュアップします。
 
 #### ✅ 正しい設計
 1. `layers/my_feature_layer.svg` を作成し、`data-controller="my_controller.html"` を指定する。
@@ -90,12 +90,12 @@ JavaScriptの命令的APIで `map.addLayer(new Layer(...))` のように動的�
 #### ❌ 誤った思考
 ```javascript
 // JavaScriptだけで動的にレイヤーオブジェクトを生成して追加しようとする
-const basemapLayer = new SVGMap.Layer('osm.svg');
+const basemapLayer = new HLA.Layer('osm.svg');
 svgMap.addLayer(basemapLayer); // ※このような命令的API中心の設計はアンチパターン
 ```
 
 #### ✅ 正しい設計
-SVGMapの核心は、**URLでアクセス可能な宣言的SVGドキュメントマニフェスト（`Container.svg`）** です。
+HLAの核心は、**URLでアクセス可能な宣言的SVGドキュメントマニフェスト（`Container.svg`）** です。
 レイヤーの追加や構成変更は、`Container.svg` 内に `<animation xlink:href="..." />` を宣言することで行います。
 
 ---
@@ -115,7 +115,7 @@ function lonLatToPixel(lon, lat) {
 ```
 
 #### ✅ 正しい設計
-SVGMapフレームワークのコア機能である `<globalCoordinateSystem>` を厳格に宣言します。
+HLAフレームワークのコア機能である `<globalCoordinateSystem>` を厳格に宣言します。
 ```xml
 <globalCoordinateSystem srsName="http://purl.org/crs/84" transform="matrix(1,0,0,-1,0,0)" />
 ```
@@ -141,7 +141,7 @@ SVGMapフレームワークのコア機能である `<globalCoordinateSystem>` �
 
 #### ✅ 正しい設計
 各レイヤーのUIは、そのレイヤー自身のコントローラーHTML（例: `river_controller.html`）の中に記述します。
-SVGMapフレームワークは、`data-controller="river_controller.html#exec=appearOnLayerLoad"` を検出すると、そのレイヤー専用のウィンドウ/iframeを地図上にオーサリングして表示します。これにより、レイヤーを非表示にすればUIも自動で消え、スタイルシートも完全にカプセル化されます。
+HLAフレームワークは、`data-controller="river_controller.html#exec=appearOnLayerLoad"` を検出すると、そのレイヤー専用のウィンドウ/iframeを地図上にオーサリングして表示します。これにより、レイヤーを非表示にすればUIも自動で消え、スタイルシートも完全にカプセル化されます。
 
 ---
 
@@ -183,7 +183,7 @@ window.addEventListener("zoomPanMap", () => {
            visible-max-zoom="50000"
            title="建物詳細" />
 ```
-表示・非表示やメモリ管理（非アクティブ時の解放等）はSVGMapコアエンジンが最適に制御します。レイヤー側でコアの責務を奪ってはなりません。
+表示・非表示やメモリ管理（非アクティブ時の解放等）はHLAコアエンジンが最適に制御します。レイヤー側でコアの責務を奪ってはなりません。
 
 ---
 

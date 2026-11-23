@@ -19,7 +19,7 @@
 />
 ```
 - `xlink:href`: レイヤーのベースとなるSVGファイルパス（またはURL）。
-- `x, y, width, height`: SVGMapのグローバル座標系をカバーするバウンディングボックス。
+- `x, y, width, height`: HLAのグローバル座標系をカバーするバウンディングボックス。
 - `visible-min-zoom` / `visible-max-zoom`: レイヤーが表示されるズーム倍率の範囲（コア機能がこの属性に基づき表示・読み込みを制御する）。
 - `data-controller`: このレイヤー専用のS-LaWA（HTML+JS）のパス。
 

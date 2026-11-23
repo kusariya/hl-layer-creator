@@ -1,6 +1,6 @@
-# SVGMap 仕様リファレンス (Specification Reference)
+# HLA 仕様リファレンス (Specification Reference)
 
-本ドキュメントは、SVGMap (HLMap) の各種仕様、XML/SVGスキーマ、属性定義、座標系マトリクス、およびホストHTMLの構成仕様を定義したリファレンスです。開発時は本仕様に厳密に準拠してください。
+本ドキュメントは、HLA (HLMap) の各種仕様、XML/SVGスキーマ、属性定義、座標系マトリクス、およびホストHTMLの構成仕様を定義したリファレンスです。開発時は本仕様に厳密に準拠してください。
 
 ---
 
@@ -72,7 +72,7 @@ SVGベクター空間と地理空間（測地系）を結びつける最重要�
   - `visible`: 表示
   - `hidden`: 非表示
 - `visible-min-zoom` / `visible-max-zoom`: レイヤーが表示されるズーム倍率の範囲。
-  - **重要（コア機能との責務分離）**: 表示倍率（Level of Detail: LOD）に応じた表示/非表示の切り替えは、SVGMapコアエンジンが本属性に基づいて自動的に最適制御します。レイヤー側のスクリプトで独自にズーム判定して要素を破棄・再生成する必要はありません。
+  - **重要（コア機能との責務分離）**: 表示倍率（Level of Detail: LOD）に応じた表示/非表示の切り替えは、HLAコアエンジンが本属性に基づいて自動的に最適制御します。レイヤー側のスクリプトで独自にズーム判定して要素を破棄・再生成する必要はありません。
 - `x`, `y`, `width`, `height`: グローバル空間上でのレイヤーバウンディングボックス（例: `x="-30000" y="-30000" width="60000" height="60000"`）。
 - `data-controller`: レイヤーのコントローラーHTML（S-LaWA）をコンテナ側から直接指定・オーバーライドする場合に使用します。
 
@@ -135,7 +135,7 @@ SVGベクター空間と地理空間（測地系）を結びつける最重要�
 
 ## 3. ホストHTML仕様 (`index.html`)
 
-SVGMapアプリケーションをブラウザに描画するための親HTMLファイルです。**本ファイルには地図のビジネスロジックを一切記述せず、単なるコンテナマウントポイントとして保ちます。**
+HLAアプリケーションをブラウザに描画するための親HTMLファイルです。**本ファイルには地図のビジネスロジックを一切記述せず、単なるコンテナマウントポイントとして保ちます。**
 
 ```html
 <!DOCTYPE html>
@@ -143,7 +143,7 @@ SVGMapアプリケーションをブラウザに描画するための親HTMLフ�
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVGMap アプリケーション</title>
+    <title>HLA アプリケーション</title>
     <style>
         /* 全画面マップ表示のための標準スタイル */
         html, body {
@@ -169,7 +169,7 @@ SVGMapアプリケーションをブラウザに描画するための親HTMLフ�
     <!-- 空間幾何計算ライブラリ JSTS (必須依存関係) -->
     <script src="https://unpkg.com/jsts@1.6.1/dist/jsts.min.js"></script>
 
-    <!-- SVGMap コアフレームワーク (ECMAScript モジュール) -->
+    <!-- HLA コアフレームワーク (ECMAScript モジュール) -->
     <script type="module">
         import { svgMap } from 'https://cdn.jsdelivr.net/gh/svgmap/svgmapjs@latest/SVGMapLv0.1_r18module.js';
         // グローバルスコープにインスタンスを公開
@@ -183,7 +183,7 @@ SVGMapアプリケーションをブラウザに描画するための親HTMLフ�
 
 ## 4. ディレクトリ構成規約
 
-SVGMapプロジェクトは、相対パスによる疎結合性を担保するため、以下のディレクトリ構造に準拠することを推奨します。
+HLAプロジェクトは、相対パスによる疎結合性を担保するため、以下のディレクトリ構造に準拠することを推奨します。
 
 ```text
 my-svgmap-project/
