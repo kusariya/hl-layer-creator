@@ -88,8 +88,9 @@ LeafletやOpenLayersでこれらを実装すると、メインのJavaScriptフ�
 
 ---
 
-## 4. コンテナとLaWAの責務分離ルール
-
+## 5. データ供給およびライセンス・アーキテクチャ
+詳細は [data_source_architecture.md](references/data_source_architecture.md) を参照。
+このセクションでは、データの出典に基づく意思決定フロー（ライセンス確認 → 所在判定 → Fetch/Localの分岐）を定義する。特に「非複製」と「Fetch優先」の原則を遵守し、法的なリスク回避と最新性の維持を両立させる。
 HLAの開発において破ってはならない責務境界線（Boundaries）は以下の通りです：
 
 ```

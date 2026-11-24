@@ -1,2 +1,11 @@
 *.py
 
+*.js
+*.html
+*.css
+*.svg
+*.csv
+*.json
+*.xml
+*.log
+*.tmp
