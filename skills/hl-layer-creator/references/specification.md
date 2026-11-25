@@ -74,7 +74,21 @@ SVGベクター空間と地理空間（測地系）を結びつける最重要�
 - `visible-min-zoom` / `visible-max-zoom`: レイヤーが表示されるズーム倍率の範囲。
   - **重要（コア機能との責務分離）**: 表示倍率（Level of Detail: LOD）に応じた表示/非表示の切り替えは、HLAコアエンジンが本属性に基づいて自動的に最適制御します。レイヤー側のスクリプトで独自にズーム判定して要素を破棄・再生成する必要はありません。
 - `x`, `y`, `width`, `height`: グローバル空間上でのレイヤーバウンディングボックス（例: `x="-30000" y="-30000" width="60000" height="60000"`）。
-- `data-controller`: レイヤーのコントローラーHTML（S-LaWA）をコンテナ側から直接指定・オーバーライドする場合に使用します。
+- `data-controller`: 通常は参照先レイヤーSVGのルート要素でコントローラーHTMLを指定します。Container側から直接指定する方式は、公式仕様上の特別な要件がある場合に限ります。
+- `data-lawa-mode`: LaWAの実行モードを指定します。スキルの既定はS-LaWAであり、同一オリジンでもContainer内の`<animation>`に`isolated`を指定します。T-LaWAはユーザーが明示指定した場合だけ選びます。現行バージョンの属性仕様を確認してください。
+
+Container内のLaWA参照例:
+
+```xml
+<animation
+    xlink:href="layers/facilities.svg"
+    title="公共施設"
+    class="overlay"
+    visibility="visible"
+    data-lawa-mode="isolated" />
+```
+
+参照先の`layers/facilities.svg`のルート`<svg>`に`data-controller="facilities_controller.html#exec=appearOnLayerLoad"`を設定します。Container側に`data-controller`を置く方式は、CORS非依存モード等の公式仕様上必要な場合の別方式です。
 
 記述例：
 ```xml

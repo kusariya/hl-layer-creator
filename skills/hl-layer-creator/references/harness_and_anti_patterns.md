@@ -198,10 +198,10 @@ window.addEventListener("zoomPanMap", () => {
 - [ ] **レイヤーのカプセル化**: 動的データ取得（fetch等）が親ページではなく、各LaWAのコントローラーJS内で行われているか？
 - [ ] **サンドボックス境界の遵守**: `parent.document` や `top.document` 等で親フレーム・他レイヤーのDOMに直接干渉していないか？
 - [ ] **コア機能との責務分担**: ズーム倍率に応じたLOD制御に `visible-min-zoom` / `visible-max-zoom` 属性が活用されているか？
-- [ ] **通信ライブラリの読み込み**: LaWAコントローラーHTML内で `svgMapLayerLib.js`（または `svgMapSandboxLayerLib.js`）がインポートされているか？
+- [ ] **S-LaWA既定の確認**: ユーザーがT-LaWAを明示指定していない場合、S-LaWAを選び、`svgMapSandboxLayerLib.js`と`layerWebAppReady`を使っているか？
 - [ ] **視域イベントの購読**: コントローラーJS内で `window.addEventListener("zoomPanMap", ...)` をリッスンしているか？
 - [ ] **自レイヤーDOMの操作**: コントローラーJSが親DOMではなく `window.svgImage` を通じてレイヤーSVGを更新しているか？
 - [ ] **再描画通知の実行**: DOM操作完了後に `svgMap.refreshScreen()` を呼び出しているか？
 - [ ] **出典・ライセンス表記枠の設置**: S-LaWA内UIに元データやタイルの出典・クレジット・利用条件を表示する領域（`#layer-credit` 等）が用意されているか？
 - [ ] **相対パスの徹底**: すべてのリンク、インポート、データ参照が相対パスで記述されているか？
-- [ ] **セキュリティの考慮**: 第三者提供のレイヤーを組み込む場合、T-LaWAではなくS-LaWA（サンドボックス）が選択されているか？
+- [ ] **T-LaWAの明示指定**: T-LaWAを使う場合、ユーザーから明示指定があるか？同一オリジン等の技術条件だけでT-LaWAを既定選択していないか？

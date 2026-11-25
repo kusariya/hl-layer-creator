@@ -23,24 +23,24 @@
 
 ---
 
-## 2. T-LaWA と S-LaWA の2大動作モード
+## 2. LaWAの実行モード
 
-LaWAには、セキュリティ境界と利用可能なAPIレベルに応じて2つのモードが存在します。
+新規LaWAは、同一オリジンを含めS-LaWAを既定にします。同一オリジンでS-LaWAを使う場合は、Container.svgの参照に`data-lawa-mode="isolated"`を指定します。クロスオリジンのLaWAは通常自動でS-LaWAになります。T-LaWAはユーザーが明示指定した場合に限り選びます。
 
-| 項目 | T-LaWA (Tight-coupled LaWA) | S-LaWA (Sandbox LaWA) |
+| 項目 | S-LaWA (Sandbox LaWA) — 既定 | T-LaWA (Tight-coupled LaWA) — 明示指定時のみ |
 | :--- | :--- | :--- |
-| **主な用途** | 自社開発・同一ドメイン内の信頼できるレイヤー | サードパーティ提供・クロスオリジンの外部レイヤー |
-| **セキュリティ** | 同一オリジン（Same-Origin）前提 | サンドボックス化 iframe、クロスオリジン完全隔離 |
-| **ライブラリ** | `svgMapLayerLib.js` | `svgMapSandboxLayerLib.js` |
-| **通信方式** | 親フレームワークからAPIオブジェクトを直接注入 | 非同期メッセージング（`postMessage`）によるプロトコル通信 |
-| **APIアクセス** | `svgImage`、`svgMap`、`svgMapGIStool` を直接利用可能 | 安全に抽象化されたRPCメッセージ経由の利用に限定 |
-| **インラインスクリプト**| レイヤーSVG内の `<script>` 実行可能 | レイヤーSVG内の `<script>` は無効化（XSS防止） |
+| **主な用途** | 既定の新規実装。same-origin / cross-originの双方で利用 | ユーザーが明示的に指定した実装 |
+| **セキュリティ** | サンドボックス化された実行環境 | 同一オリジンの親フレームと連携する従来モード |
+| **ライブラリ** | `svgMapSandboxLayerLib.js`（ES module） | `svgMapLayerLib.js` |
+| **通信方式** | `postMessage`を使うライブラリ経由の非同期連携 | 親フレームワークのAPIオブジェクトを利用 |
+| **APIアクセス** | 制限付き`svgMap`とレイヤーのローカル`svgImage` | 従来のLaWA API |
+| **インラインスクリプト** | レイヤーSVG内の`<script>`は実行されない | 従来の挙動に従う |
 
----
+S-LaWAの実装では[`hla-layer-implementer`の最小構成リファレンス](../../hla-layer-implementer/references/core-slawa-and-container.md)を優先します。
 
-## 3. T-LaWA の主要 API リファレンス
+## 3. T-LaWA のAPIリファレンス（明示指定時のみ）
 
-T-LaWAでは、レイヤーコントローラーの `window` スコープに以下のグローバルオブジェクトが自動的に注入されます。
+この節はユーザーがT-LaWAを明示指定した場合のみ参照します。新規実装の既定としてT-LaWAを提案してはいけません。T-LaWAでは、レイヤーコントローラーの `window` スコープに以下のグローバルオブジェクトが注入されます。
 
 ### 1. `window.svgImage` (レイヤーSVG DOM)
 現在のレイヤーに紐付けられた SVG ファイルの `Document` オブジェクトです。
@@ -76,7 +76,7 @@ svgImage.getElementById("featureGroup").appendChild(circle);
 
 ## 4. 実装レシピ
 
-### レシピ1: GeoJSON 動的フィーチャーレイヤー (T-LaWA)
+### レシピ1: GeoJSON 動的フィーチャーレイヤー (T-LaWA・明示指定時のみ)
 
 #### HTML: `layers/shelters_controller.html`
 ```html
@@ -238,7 +238,7 @@ function renderFeatures() {
 
 ## 5. S-LaWA のセキュア設計パターン
 
-クロスオリジンで配布されている他組織のLaWAを組み込む場合は、`S-LaWA` を用います。
+LaWAの既定モードはS-LaWAです。同一オリジンでもS-LaWAを使い、Container.svgの参照に`data-lawa-mode="isolated"`を指定します。クロスオリジンの場合は通常自動でS-LaWAになります。
 
 S-LaWAのコントローラーHTMLは`svgMapSandboxLayerLib.js`をES moduleとして読み込み、`layerWebAppReady`イベント後に処理を開始します。S-LaWA内には制限付きの`svgMap`とローカルな`svgImage`が提供され、DOM差分の同期はライブラリが扱います。コントローラーから独自の`svgMapSandbox.postMessage()`を呼ぶ設計ではありません。
 
