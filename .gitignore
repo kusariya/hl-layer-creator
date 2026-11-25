@@ -9,3 +9,10 @@
 *.xml
 *.log
 *.tmp
+
+# cc-sdd
+AGENTS.md
+.agents/
+.kiro/
+.codex/
+.opencode/
