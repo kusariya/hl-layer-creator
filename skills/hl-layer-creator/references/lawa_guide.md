@@ -240,18 +240,9 @@ function renderFeatures() {
 
 クロスオリジンで配布されている他組織のLaWAを組み込む場合は、`S-LaWA` を用います。
 
-1. **レイヤーの分離**:
-   レイヤーのコントローラーHTMLは、別オリジン（または `sandbox` 属性を付与したiframe）で実行されます。
-2. **`svgMapSandboxLayerLib.js` の使用**:
-   直接的な `window.svgImage` 参照はブロックされ、以下のメッセージングAPIを介して描画命令を送出します。
-   ```javascript
-   // S-LaWA でのメッセージ送出例
-   svgMapSandbox.postMessage({
-       action: "drawElements",
-       elements: [...]
-   });
-   ```
-これにより、サードパーティ製レイヤーに悪意のあるスクリプトが含まれていた場合でも、親アプリケーションの認証トークンやCookieを窃取されるリスク（XSS）を物理的に排除できます。
+S-LaWAのコントローラーHTMLは`svgMapSandboxLayerLib.js`をES moduleとして読み込み、`layerWebAppReady`イベント後に処理を開始します。S-LaWA内には制限付きの`svgMap`とローカルな`svgImage`が提供され、DOM差分の同期はライブラリが扱います。コントローラーから独自の`svgMapSandbox.postMessage()`を呼ぶ設計ではありません。
+
+正確なファイル構成と最小コード例は、[`hla-layer-implementer`のS-LaWAリファレンス](../../hla-layer-implementer/references/core-slawa-and-container.md)を参照してください。S-LaWAで使用できるAPIは制限されるため、実装時は現行の[公式解説書](https://www.svgmap.org/wiki/index.php?title=%E8%A7%A3%E8%AA%AC%E6%9B%B8)と公式コードを確認してください。
 
 ---
 
